@@ -33,13 +33,13 @@ header = {
 }
 
 
-def extract_websites(alvo):
+def extract_websites(target):
     '''Extract source codes of websites.'''
     print('\033[1;36m+------------------------------------------+\033[0m')
     print('\033[1;36m[+] Extacting WebServer:\033[0m')
-    if alvo.startswith('http' or 'https'): 
+    if target.startswith('http' or 'https'): 
         try: 
-            source = requests.get(alvo).text
+            source = requests.get(target).text
             soup = BeautifulSoup(source, 'lxml')
             print(soup.prettify())
             with open("extract_websites.html", "at+", encoding="utf8") as h:
@@ -74,11 +74,11 @@ def extract_links(content):
     return links
 
 
-def get_links(alvo):
+def get_links(target):
     '''Create a log for links that are in the URL'''
     print('\033[1;36m+------------------------------------------+\033[0m')
     print('\033[1;36m[+] Analizing links:\033[0m')
-    page = requests.get(alvo)
+    page = requests.get(target)
     links = extract_links(page.text)
     for link in links: 
         print(link)
@@ -86,12 +86,12 @@ def get_links(alvo):
             t.write(f"{links} \n\r")
 
 
-def navigate_links(alvo):
+def navigate_links(target):
     '''Function that navigate websites just using one URL.'''
     print('\033[1;36m+------------------------------------------+\033[0m')
     print('\033[1;36m[+] Starting the Navigate function:\033[0m')
-    seen_urls = [alvo]
-    available_urls = [alvo]
+    seen_urls = [target]
+    available_urls = [target]
     while available_urls:
         url = available_urls.pop()
         try:
@@ -117,15 +117,15 @@ def navigate_links(alvo):
                 available_urls.append(link)
 
 
-def extract_emails(alvo):
+def extract_emails(target):
     '''See URL's and emails.'''
     global emails
     try:
         print('\033[1;36m+------------------------------------------+\033[0m')
         print('\033[1;36m[+] Extracting emails:\033[0m')
-        if alvo.startswith('http' or 'https'):
+        if target.startswith('http' or 'https'):
             try:
-                urls = deque([alvo])
+                urls = deque([target])
                 count = 0
                 scraped_urls = set()
                 emails = set()
@@ -180,14 +180,14 @@ def extract_emails(alvo):
         print(ex)
 
 
-def extract_cookies(alvo):
+def extract_cookies(target):
     '''Get name and values of emails.'''
-    if alvo.startswith('http' or 'https'):
+    if target.startswith('http' or 'https'):
         try: 
             cookie_jar = http.cookiejar.CookieJar()
             url_opner = urllib.request.build_opener(urllib.request.HTTPCookieProcessor(cookie_jar))
 
-            url_opner.open(alvo)
+            url_opner.open(target)
             for cookie in cookie_jar: 
                 print("[+] Cookie Name = %s - Cookie Value = %s" % (cookie.name, cookie.value))
                 with open("cookie.txt", "at+", encoding="utf8") as c: 
@@ -206,17 +206,17 @@ def extract_cookies(alvo):
         print('[-] Enter an avaible URL.')
 
 
-def website_grabber(alvo, cookie):
+def website_grabber(target, cookie):
     '''Grab metadatas using URL and the Cookie.'''
     print('\033[1;36m+------------------------------------------+\033[0m')
     print('\033[1;36m[+] Analyzing Metadatas:\033[0m')
-    if alvo.startswith('http' or 'https'):
+    if target.startswith('http' or 'https'):
         try: 
             esc = str(input("[*] GET or POST: ")).strip().lower() 
             if esc == 'post':
-                req = requests.post(alvo, cookies={'Cookie':cookie}, headers=header)
+                req = requests.post(target, cookies={'Cookie':cookie}, headers=header)
             else:
-                req = requests.get(alvo, cookies={'Cookie':cookie}, headers=header)
+                req = requests.get(target, cookies={'Cookie':cookie}, headers=header)
 
             code = req.status_code
             if code == 200:

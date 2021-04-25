@@ -5,7 +5,7 @@ from kiira_search import *
 import time
 
 banner()
-alvo = str(input('[*] Enter the website URL: ')).lower().strip()
+target = str(input('[*] Enter the website URL: ')).lower().strip()
 
 
 def start():
@@ -13,17 +13,17 @@ def start():
     ask = 'emails'
 
     if ask == 'website': 
-        extract_websites(alvo)
+        extract_websites(target)
     elif ask == 'links': 
-        get_links(alvo)
+        get_links(target)
     elif ask == 'navigate':   
-        navigate_links(alvo)
+        navigate_links(target)
     elif ask == 'emails':
-        extract_emails(alvo)
+        extract_emails(target)
     elif ask == 'cookies':
-        extract_cookies(alvo)
+        extract_cookies(target)
     elif ask == 'grabbing':
-        website_grabber(alvo)
+        website_grabber(target)
     else: 
         print('[-] Enter a valid answer.')
 
